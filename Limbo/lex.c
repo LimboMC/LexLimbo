@@ -25,11 +25,12 @@ int main() {
 	glfwMakeContextCurrent(window);
 	LEXLoadGL();
 	LViewport(0, 0, 800, 800);
-	GLuint Vertex, Fragment,Program;
+	GLuint Vertex, Fragment,Fragment1,Program;
 	Vertex = LShaderVer();
 	Fragment = LShaderFrag();
 	LShaderSource(Vertex, 1, &vertexShaderSource);
 	LShaderSource(Fragment, 1, &fragmentShaderSource);
+
 	Program = LCreateProgram();
 	LAttachShader(Program,Vertex, Fragment);
 	LLinkProgram(Program);

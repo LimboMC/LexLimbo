@@ -2,6 +2,7 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<lexgl.h>
+#include <stdarg.h>
 	typedef struct LexColor {
 		float Red;
 		float Blue;
@@ -24,12 +25,15 @@
 		glShaderSource(Shader, Size, ShaderVertex,NULL);
 		glCompileShader(Shader);
 	}
-	LDeleteShader(GLuint Shader) {
-		glDeleteShader(Shader);
-	}
-	LDeleteShaderDouble(GLuint Shader1, GLuint Shader2) {
+	LDeleteShader(GLuint SizeDelete,GLuint Shader1,...) {
+		va_list Shaders;
+		va_start(Shaders, Shader1);
+		for (int i = 0; i < SizeDelete; ++i) {
+			GLuint Shader = va_arg(Shaders, GLuint);
+			glDeleteShader(Shader);
+		}
+		va_end(Shaders);
 		glDeleteShader(Shader1);
-		glDeleteShader(Shader2);
 	}
 	//Program Shader
 	GLuint LCreateProgram(void){
@@ -103,7 +107,7 @@
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 	}
-	void LEXLoadGL() {
+	LEXLoadGL(void) {
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	}
 	GLFWwindow * LCreateWindow(int Width, int Height, const char* Title,GLFWmonitor *moniter) {
