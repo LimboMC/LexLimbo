@@ -33,6 +33,12 @@
 // GL equivalent data types
 #define LEX_UNSIGNED_BYTE                        0x1401      // GL_UNSIGNED_BYTE
 #define LEX_FLOAT                                0x1406      // GL_FLOAT
+#define LEX_INT                                  0x1404      // GL_INT
+#define LEX_SHORT                                0x1402      // GL_SHORT
+#define LEX_DOUBLE                               0x140A      // GL_DOUBLE
+#define LEX_BYTE                                 0x1400      // GL_BYTE
+#define LEX_UNSIGNED_SHORT                       0x1403      // GL_UNSIGNED_SHORT
+#define LEX_UNSIGNED_INT                         0x1405      // GL_UNSIGNED_INT
 
 // GL buffer usage hint
 #define LEX_STREAM_DRAW                          0x88E0      // GL_STREAM_DRAW
@@ -91,4 +97,5 @@
 #define LEX_TRUE                                 1
 #define LEX_FALSE                                0
 #define LEX_UNBIND                               0x9999
+
 #endif // !LEX_LIMBO_OPENGL
