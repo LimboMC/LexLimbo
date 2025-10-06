@@ -103,6 +103,9 @@
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 	}
+	void LEXLoadGlad() {
+		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	}
 	//Lex KeyBoard
 	typedef enum {
 		LKey_0 = 48,

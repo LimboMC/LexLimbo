@@ -39,7 +39,9 @@
 #define LEX_BYTE                                 0x1400      // GL_BYTE
 #define LEX_UNSIGNED_SHORT                       0x1403      // GL_UNSIGNED_SHORT
 #define LEX_UNSIGNED_INT                         0x1405      // GL_UNSIGNED_INT
-
+#define LEX_TRUE                                 1           // GL_TRUE
+#define LEX_FALSE                                0           // GL_FALSE
+#define LEX_UNSIGNED_INT                         0x1405      // GL_UNSIGNED_INT
 // GL buffer usage hint
 #define LEX_STREAM_DRAW                          0x88E0      // GL_STREAM_DRAW
 #define LEX_STREAM_READ                          0x88E1      // GL_STREAM_READ
@@ -93,9 +95,6 @@
 #define LEX_ARRAY_BUFFER                         0x8892
 #define LEX_ELEMENT_ARRAY_BUFFER                 0x8893
 //
-#define LEX_UNSIGNED_INT                         0x1405
-#define LEX_TRUE                                 1
-#define LEX_FALSE                                0
-#define LEX_UNBIND                               0x9999
+#define LEX_UNBIND                               0x9999     // Unbind all buffers and arrays
 
 #endif // !LEX_LIMBO_OPENGL
