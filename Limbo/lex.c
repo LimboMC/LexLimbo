@@ -21,9 +21,9 @@ const char* fragmentShaderSource = "#version 460 core\n"
 LexKeyBoard Key;
 int main() {
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Hello Limbo", NULL, NULL);
+	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine", NULL);
 	glfwMakeContextCurrent(window);
-	LEXLoadGlad();
+	LEXLoadGL();
 	LViewport(0, 0, 800, 800);
 	GLuint Vertex, Fragment,Program;
 	Vertex = LShaderVer();

@@ -103,8 +103,12 @@
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 	}
-	void LEXLoadGlad() {
+	void LEXLoadGL() {
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	}
+	GLFWwindow * LCreateWindow(int Width, int Height, const char* Title,GLFWmonitor *moniter) {
+		GLFWwindow * window = glfwCreateWindow(Width, Height, Title,moniter, NULL);
+		return window;
 	}
 	//Lex KeyBoard
 	typedef enum {
