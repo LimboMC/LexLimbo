@@ -1,87 +1,109 @@
 #pragma once
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
+#include<lexgl.h>
 	typedef struct LexColor {
 		float Red;
 		float Blue;
 		float Green;
 		float Alpha;
 	} LexColor;
-	void LColorClear(LexColor color) {
+	LColorClear(LexColor color) {
 		glClearColor(color.Red, color.Green, color.Blue, color.Alpha);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	//Lex Shader Vertex And Fragment
-	GLuint LShaderVer()
+	GLuint LShaderVer(void)
 	{
 		return glCreateShader(GL_VERTEX_SHADER);
 	}
-	GLuint LShaderFrag() {
+	GLuint LShaderFrag(void) {
 		return glCreateShader(GL_FRAGMENT_SHADER);
 	}
-	void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex) {
+	LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex) {
 		glShaderSource(Shader, Size, ShaderVertex,NULL);
 		glCompileShader(Shader);
 	}
-	void LDeleteShader(GLuint Shader) {
+	LDeleteShader(GLuint Shader) {
 		glDeleteShader(Shader);
 	}
-	void LDeleteShaderDouble(GLuint Shader1, GLuint Shader2) {
+	LDeleteShaderDouble(GLuint Shader1, GLuint Shader2) {
 		glDeleteShader(Shader1);
 		glDeleteShader(Shader2);
 	}
 	//Program Shader
-	GLuint LCreateProgram(){
+	GLuint LCreateProgram(void){
 		return glCreateProgram();
 	}
-	void LAttachShader(GLuint Program,GLuint Vertex,GLuint Fragment) {
+	LAttachShader(GLuint Program,GLuint Vertex,GLuint Fragment) {
 		glAttachShader(Program, Vertex);
 		glAttachShader(Program, Fragment);
 	}
-	void LLinkProgram(GLuint Program) {
+	LLinkProgram(GLuint Program) {
 		glLinkProgram(Program);
 	}
-	void LUseProgram(GLuint Program) {
+	LUseProgram(GLuint Program) {
 		glUseProgram(Program);
 	}
-	void LDeleteProgram(GLuint Program) {
+	LDeleteProgram(GLuint Program) {
 		glDeleteProgram(Program);
 	}
-
 	//Verex Array and Veretx Buffers And Element Buffers
-	void LGenVerBuff(GLsizei Size,GLuint *Buffer) {
+	LGenVerBuff(GLsizei Size,GLuint *Buffer) {
 		*Buffer = 0;
 		glGenBuffers(Size, Buffer);
 	}
-	void LGenVerArray(GLsizei Size, GLuint *Array) {
+	LGenVerArray(GLsizei Size, GLuint *Array) {
 		*Array = 0;
 		glGenVertexArrays(Size, Array);
 	}
-	void LBindVerBuff(GLuint Target,GLuint VBO) {
+	LBindVerBuff(GLuint Target,GLuint VBO) {
 		glBindBuffer(Target,VBO);
 	}
-	void LBindVerArrays(GLuint VAO) {
+	LBindVerArrays(GLuint VAO) {
 		glBindVertexArray(VAO);
 	}
-	void LBufferData(GLuint Target, GLuint Use, GLsizeiptr Size,const void *data) {
+	LBufferData(GLuint Target, GLuint Use, GLsizeiptr Size,const void *data) {
 		glBufferData(Target, Size, data, Use);
 	}
-	void LEnableVerAttribArray(GLuint Index) {
+	LEnableVerAttribArray(GLuint Index) {
 		glEnableVertexAttribArray(Index);
 	}
-	void LVerAttribPointer(GLuint Index,GLint Size,GLuint Type,GLboolean Bool,GLsizei Sizei,const void *Pointer ) {
+	LVerAttribPointer(GLuint Index,GLint Size,GLuint Type,GLboolean Bool,GLsizei Sizei,const void *Pointer ) {
 		glVertexAttribPointer(Index, Size, Type, Bool, Sizei, Pointer);
 	}
-	void LDeleteBuffer(GLsizei Size,GLuint Buffer) {
+	LDeleteBuffer(GLsizei Size,GLuint Buffer) {
 		glDeleteBuffers(Size,&Buffer);
 	}
-	void LDeleteVerArray(GLsizei Size, GLuint Array) {
+	LDeleteVerArray(GLsizei Size, GLuint Array) {
 		glDeleteVertexArrays(Size, &Array);
 	}
-	void LDrawElement(GLuint Mode,GLsizei Size,GLuint Type,const void * indices) {
+	LDrawElement(GLuint Mode,GLsizei Size,GLuint Type,const void * indices) {
 		glDrawElements(Mode, Size, Type, indices);
 	}
-
+	LDrawArray(GLuint Mode,GLint First,GLsizei Size) {
+		glDrawArrays(Mode, First, Size);
+	}
+	LViewport(GLint x,GLint y,GLsizei Width,GLsizei Height) {
+		glViewport(x, y, Width, Height);
+	}
+	LUnBind(GLuint Mode) {
+		if (Mode == LEX_ARRAY_BUFFER) {
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+		if(Mode ==LEX_ELEMENT_ARRAY_BUFFER){
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
+		if (Mode == 0) {
+			glBindVertexArray(0);
+		}
+		if (Mode == LEX_UNBIND) {
+			glBindVertexArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
+	}
+	//Lex KeyBoard
 	typedef enum {
 		LKey_0 = 48,
 		LKey_1 = 49,

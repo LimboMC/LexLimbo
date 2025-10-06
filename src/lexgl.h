@@ -90,4 +90,5 @@
 #define LEX_UNSIGNED_INT                         0x1405
 #define LEX_TRUE                                 1
 #define LEX_FALSE                                0
+#define LEX_UNBIND                               0x9999
 #endif // !LEX_LIMBO_OPENGL

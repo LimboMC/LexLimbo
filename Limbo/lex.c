@@ -24,7 +24,7 @@ int main() {
 	GLFWwindow* window = glfwCreateWindow(800, 800, "Hello Limbo", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	glViewport(0, 0, 800, 800);
+	LViewport(0, 0, 800, 800);
 	GLuint Vertex, Fragment,Program;
 	Vertex = LShaderVer();
 	Fragment = LShaderFrag();
@@ -56,10 +56,7 @@ int main() {
 	LBufferData(LEX_ELEMENT_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(indices),indices);
 	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float), (void*)0);
 	LEnableVerAttribArray(0);
-	LBindVerArrays(0);
-	LBindVerBuff(LEX_ARRAY_BUFFER, 0);
-	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER, 0);
-	LBindVerArrays(0);
+	LUnBind(LEX_UNBIND);
 	while (!glfwWindowShouldClose(window)) {
 		LColorClear(Color);
 		LBindVerArrays(VAO);
