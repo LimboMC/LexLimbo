@@ -23,8 +23,8 @@ int main() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-
 	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine", NULL);
+	LSetWindowMode(window, LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
 	glfwMakeContextCurrent(window);
 	LEXLoadGL();
 	LViewport(0, 0, 800, 800);
