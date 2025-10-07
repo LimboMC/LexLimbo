@@ -25,16 +25,15 @@ int main() {
 	glfwMakeContextCurrent(window);
 	LEXLoadGL();
 	LViewport(0, 0, 800, 800);
-	GLuint Vertex, Fragment,Fragment1,Program;
+	GLuint Vertex = 0, Fragment = 0,Program;
 	Vertex = LShaderVer();
 	Fragment = LShaderFrag();
 	LShaderSource(Vertex, 1, &vertexShaderSource);
 	LShaderSource(Fragment, 1, &fragmentShaderSource);
-
 	Program = LCreateProgram();
 	LAttachShader(Program,Vertex, Fragment);
 	LLinkProgram(Program);
-	LDeleteShaderDouble(Vertex, Fragment);
+	LDeleteShader(2,Vertex,Fragment);
 	LexColor Color = { 1.0,1.0,1.0,1.0 };
 	float vertices[] = {
 	0.25f,  0.25f, 0.0f,  // top right
@@ -55,7 +54,7 @@ int main() {
 	LBufferData(LEX_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(vertices), vertices);
 	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER,EBO);
 	LBufferData(LEX_ELEMENT_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(indices),indices);
-	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float), (void*)0);
+	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float));
 	LEnableVerAttribArray(0);
 	LUnBind(LEX_UNBIND);
 	while (!glfwWindowShouldClose(window)) {

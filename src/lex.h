@@ -25,15 +25,14 @@
 		glShaderSource(Shader, Size, ShaderVertex,NULL);
 		glCompileShader(Shader);
 	}
-	LDeleteShader(GLuint SizeDelete,GLuint Shader1,...) {
+	LDeleteShader(GLuint Size,GLuint Shader,...) {
 		va_list Shaders;
-		va_start(Shaders, Shader1);
-		for (int i = 0; i < SizeDelete; ++i) {
-			GLuint Shader = va_arg(Shaders, GLuint);
-			glDeleteShader(Shader);
+		va_start(Shaders,Shader);
+		for(int  i= 0;i<Size;i++){
+			GLuint Sha = va_arg(Shaders,GLuint);
+			glDeleteShader(Sha);
 		}
 		va_end(Shaders);
-		glDeleteShader(Shader1);
 	}
 	//Program Shader
 	GLuint LCreateProgram(void){
@@ -73,8 +72,8 @@
 	LEnableVerAttribArray(GLuint Index) {
 		glEnableVertexAttribArray(Index);
 	}
-	LVerAttribPointer(GLuint Index,GLint Size,GLuint Type,GLboolean Bool,GLsizei Sizei,const void *Pointer ) {
-		glVertexAttribPointer(Index, Size, Type, Bool, Sizei, Pointer);
+	LVerAttribPointer(GLuint Index,GLint Size,GLuint Type,GLboolean Bool,GLsizei Sizei) {
+		glVertexAttribPointer(Index, Size, Type, Bool, Sizei, (void*)0);
 	}
 	LDeleteBuffer(GLsizei Size,GLuint Buffer) {
 		glDeleteBuffers(Size,&Buffer);
