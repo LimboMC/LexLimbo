@@ -92,9 +92,25 @@
 #define LEX_READ_FRAMEBUFFER                     0x8CA8      // GL_READ_FRAMEBUFFER
 #define LEX_DRAW_FRAMEBUFFER                     0x8CA9      // GL_DRAW_FRAMEBUFFER
 //GL Vertex
-#define LEX_ARRAY_BUFFER                         0x8892
-#define LEX_ELEMENT_ARRAY_BUFFER                 0x8893
+#define LEX_ARRAY_BUFFER                          0x8892
+#define LEX_ELEMENT_ARRAY_BUFFER                  0x8893
 //
-#define LEX_UNBIND                               0x9999     // Unbind all buffers and arrays
-
+#define LEX_UNBIND                                0x9999     // Unbind all buffers and arrays
+#define LEX_COLOR_BUFFER_BIT                      0x00004000
+#define LEX_DEPTH_BUFFER_BIT                      0x00000100
+#define LEX_STENCIL_BUFFER_BIT                    0x00000400
+#define LEX_COLOR_CUSTOM                          0x001234
+// Window Modes
+#define LEX_MAXIMIZED_WINDOW                      0x00020008 //GLFW_MAXIMIZED
+#define LEX_MINIMIZED_WINDOW                      0x00020002 //GLFW_ICONIFIED
+#define LEX_HIDE_WINDOW                           0x0002000A //-Lex-//
+#define LEX_FLOAT_WINDOW                          0x00020007 //GLFW_FLOATING
+#define LEX_RESIZABLE_WINDOW                      0x00020003 //GLFW_RESIZABLE
+#define LEX_MOUSE_PASSTHROUGH_WINDOW              0x0002000D //GLFW_MOUSE_PASSTHROUGH
+#define KEX_DECORATED_WINDOW                      0x00020005 //GLFW_DECORATED    
+#define LEX_VISIBLE_WINDOW                        0x00020004 //GLFW_VISIBLE
+#define LEX_FOCUSED_WINDOW                        0x00020001 //GLFW_FOCUSED
+#define LEX_AUTO_ICONIFY_WINDOW                   0x00020006 //GLFW_AUTO_ICONIFY
+#define LEX_TRANSPARENT_FRAMEBUFFER_WINDOW        0x0002000A //GLFW_TRANSPARENT_FRAMEBUFFER
+#define LEX_FOCUS_ON_SHOW                         0x0002000C //GLFW_FOCUS_ON_SHOW       
 #endif // !LEX_LIMBO_OPENGL

@@ -21,6 +21,9 @@ const char* fragmentShaderSource = "#version 460 core\n"
 LexKeyBoard Key;
 int main() {
 	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+
 	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine", NULL);
 	glfwMakeContextCurrent(window);
 	LEXLoadGL();

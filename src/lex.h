@@ -133,6 +133,85 @@
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 	}
+	LexSetPosWindow(int X,int Y) {
+		glfwWindowHint(GLFW_POSITION_X, X);
+		glfwWindowHint(GLFW_POSITION_Y, Y);
+	}
+	LSetWindowMode(GLFWwindow *window,int Mode,int ModeBool) {
+		if (Mode == LEX_MAXIMIZED_WINDOW && ModeBool == NULL) {
+			glfwMaximizeWindow(window);
+		}
+		else {
+			printf("ERROR : MODE NO SUPPORT !");
+		}
+		if(Mode == LEX_MINIMIZED_WINDOW &&ModeBool == NULL){
+			glfwIconifyWindow(window);
+		}
+		else {
+			printf("ERROR : MODE NO SUPPORT !");
+		}
+		if(Mode == LEX_HIDE_WINDOW && ModeBool == NULL){
+			glfwHideWindow(window);
+		}
+		else {
+			printf("ERROR : MODE NO SUPPORT !");
+		}
+		if (Mode == LEX_VISIBLE_WINDOW) {
+			glfwWindowHint(LEX_VISIBLE_WINDOW,ModeBool);
+		}
+		else {
+			printf("ERROR : MODE NO SUPPORT !");
+			}
+		if (Mode == LEX_FLOAT_WINDOW) {
+			glfwWindowHint(LEX_FLOAT_WINDOW,ModeBool);
+		}
+		else {
+			printf("ERROR : MODE NO SUPPORT !");
+		}
+		if (Mode == LEX_MOUSE_PASSTHROUGH_WINDOW) {
+			glfwWindowHint(LEX_MOUSE_PASSTHROUGH_WINDOW, ModeBool);
+		}
+		else {
+			printf("Error: Mode Window Size Not Found\n");
+		}
+		if (Mode == LEX_FOCUSED_WINDOW) {
+			glfwWindowHint(LEX_FOCUSED_WINDOW, ModeBool);
+		}
+		else {
+			printf("Error: Mode Window Size Not Found\n");
+		}
+		if (Mode == LEX_TRANSPARENT_FRAMEBUFFER_WINDOW) {
+			glfwWindowHint(LEX_TRANSPARENT_FRAMEBUFFER_WINDOW, ModeBool);
+		}
+		else {
+			printf("Error: Mode Window Size Not Found\n");
+		}
+		if (Mode == LEX_RESIZABLE_WINDOW) {
+			glfwWindowHint(LEX_RESIZABLE_WINDOW, ModeBool);
+		}
+		else {
+			printf("Error: Mode Window Size Not Found\n");
+		}
+		if (Mode == GLFW_FOCUS_ON_SHOW) {
+			glfwWindowHint(GLFW_FOCUS_ON_SHOW, ModeBool);
+		}
+		else {
+			printf("Error: Mode Window Size Not Found\n");
+		}
+		if (Mode == LEX_AUTO_ICONIFY_WINDOW) {
+			glfwWindowHint(LEX_AUTO_ICONIFY_WINDOW, ModeBool);
+		}
+		else {
+			printf("Error: Mode Window Size Not Found\n");
+		}
+	}
+	LWindowOpacity(GLFWwindow*window,float opacity) {
+		glfwSetWindowOpacity(window,opacity);
+	}
+	LWindowMoniter(GLFWwindow* window,int X,int Y,int W,int Height,int RefeshRate) {
+		const GLFWmonitor* monitor = glfwGetWindowMonitor(window);
+		glfwSetWindowMonitor(window,monitor,X,Y,W,Y,RefeshRate);
+	}
 	LEXLoadGL(void) {
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	}
