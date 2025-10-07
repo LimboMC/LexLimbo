@@ -4,7 +4,6 @@
 //-------->Lex
 #include<lex.h>
 #include<lexgl.h>
-#include<>
 //________//
 #include<stdio.h>
 const char* vertexShaderSource = "#version 460 core\n"
@@ -24,7 +23,7 @@ int main() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine", NULL);
+	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine");
 	LSetWindowMode(window, LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
 	glfwMakeContextCurrent(window);
 	LEXLoadGL();
