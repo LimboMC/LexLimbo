@@ -7,7 +7,7 @@ target_include_directories(Limbo PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/../src 
   ${CMAKE_CURRENT_SOURCE_DIR}/../lib/glfw/include
   ${CMAKE_CURRENT_SOURCE_DIR}/../lib/glad/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/../lib/glm
+  ${CMAKE_CURRENT_SOURCE_DIR}/../lib/cglm
   ${CMAKE_CURRENT_SOURCE_DIR}/../lib/raudio/include
   ${CMAKE_CURRENT_SOURCE_DIR}/../lib/STB/include/STBLib
 )
