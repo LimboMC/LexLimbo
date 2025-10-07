@@ -1,6 +1,8 @@
 #include<lexcore.h>
+#include<lex.h>
+#include<stdarg.h>
 void LColorClear(LexColor color) {
-	glClearColor(color.Red, color.Green, color.Blue, color.Alpha);
+	glClearColor(color.R, color.G, color.B, color.A);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 //Lex Shader Vertex And Fragment
