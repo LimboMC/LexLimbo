@@ -34,6 +34,15 @@
 		}
 		va_end(Shaders);
 	}
+	LIsShader(GLuint Size,GLuint Shader,...) {
+		va_list IsShader;
+		va_start(IsShader, Shader);
+		for (int i = 0; i < Size; i++) {
+			GLuint Sha = va_arg(IsShader, GLuint);
+			glIsShader(Sha);
+		}
+		va_end(IsShader);
+	}
 	//Program Shader
 	GLuint LCreateProgram(void){
 		return glCreateProgram();
@@ -75,8 +84,26 @@
 	LVerAttribPointer(GLuint Index,GLint Size,GLuint Type,GLboolean Bool,GLsizei Sizei) {
 		glVertexAttribPointer(Index, Size, Type, Bool, Sizei, (void*)0);
 	}
-	LDeleteBuffer(GLsizei Size,GLuint Buffer) {
-		glDeleteBuffers(Size,&Buffer);
+	LDeleteBuffer(GLsizei SizeBuffer,GLuint Buffer,...) {
+		va_list buffer;
+		va_start(buffer,Buffer);
+		GLuint SizeBuf = 1;
+		for (int i = 0; i < SizeBuffer; i++) {
+			GLuint Buf = va_arg(buffer, GLuint);
+			glDeleteBuffers(1, &Buf);
+		}
+		va_end(buffer);
+		glDeleteBuffers(1,&Buffer);
+	}
+	LIsBuffers(GLsizei Size, GLuint Buffer,...) {
+		va_list buffer;
+		va_start(buffer, Buffer);
+		for (int i = 0; i < Size; i++) {
+			GLuint Buf = va_arg(buffer, GLuint);
+			glIsBuffer(Buf);
+		}
+		va_end(buffer);
+		glIsBuffer(Buffer);
 	}
 	LDeleteVerArray(GLsizei Size, GLuint Array) {
 		glDeleteVertexArrays(Size, &Array);

@@ -25,15 +25,15 @@ int main() {
 	glfwMakeContextCurrent(window);
 	LEXLoadGL();
 	LViewport(0, 0, 800, 800);
-	GLuint Vertex = 0, Fragment = 0,Program;
+	GLuint Vertex = 0, Fragment = 0, Program;
 	Vertex = LShaderVer();
 	Fragment = LShaderFrag();
 	LShaderSource(Vertex, 1, &vertexShaderSource);
 	LShaderSource(Fragment, 1, &fragmentShaderSource);
 	Program = LCreateProgram();
-	LAttachShader(Program,Vertex, Fragment);
+	LAttachShader(Program, Vertex, Fragment);
 	LLinkProgram(Program);
-	LDeleteShader(2,Vertex,Fragment);
+	LDeleteShader(2, Vertex, Fragment);
 	LexColor Color = { 1.0,1.0,1.0,1.0 };
 	float vertices[] = {
 	0.25f,  0.25f, 0.0f,  // top right
@@ -45,15 +45,15 @@ int main() {
 	    0, 1, 3,   // first triangle
 	    1, 2, 3    // second triangle
 	};
-	GLuint VBO,VAO,EBO;
+	GLuint VBO, VAO, EBO;
 	LGenVerArray(1, &VAO);
 	LGenVerBuff(1, &VBO);
 	LGenVerBuff(1, &EBO);
 	LBindVerArrays(VAO);
-	LBindVerBuff(LEX_ARRAY_BUFFER,VBO);
-	LBufferData(LEX_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(vertices), vertices);
-	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER,EBO);
-	LBufferData(LEX_ELEMENT_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(indices),indices);
+	LBindVerBuff(LEX_ARRAY_BUFFER, VBO);
+	LBufferData(LEX_ARRAY_BUFFER, LEX_STATIC_DRAW, sizeof(vertices), vertices);
+	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER, EBO);
+	LBufferData(LEX_ELEMENT_ARRAY_BUFFER, LEX_STATIC_DRAW, sizeof(indices), indices);
 	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float));
 	LEnableVerAttribArray(0);
 	LUnBind(LEX_UNBIND);
@@ -66,8 +66,7 @@ int main() {
 		glfwPollEvents();
 	}
 	LDeleteVerArray(1, &VAO);
-	LDeleteBuffer(1, &VBO);
-	LDeleteBuffer(1, &EBO);
+	LDeleteBuffer(2, &VBO, &EBO);
 	LDeleteProgram(Program);
 	glfwDestroyWindow(window);
 	glfwTerminate();
