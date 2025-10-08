@@ -81,7 +81,9 @@
 	void LDrawElement(GLuint Mode,GLsizei Size,GLuint Type,const void * indices) {
 		glDrawElements(Mode, Size, Type, indices);
 	}
-
+	void LexLoadGL() {
+		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	}
 	typedef enum {
 		LKey_0 = 48,
 		LKey_1 = 49,

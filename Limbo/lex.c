@@ -23,7 +23,7 @@ int main() {
 	glfwInit();
 	GLFWwindow* window = glfwCreateWindow(800, 800, "Hello Limbo", NULL, NULL);
 	glfwMakeContextCurrent(window);
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	LexLoadGL();
 	glViewport(0, 0, 800, 800);
 	GLuint Vertex, Fragment,Program;
 	Vertex = LShaderVer();
