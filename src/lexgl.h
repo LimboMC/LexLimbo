@@ -24,7 +24,6 @@
 #define LEX_MODELVIEW                            0x1700      // GL_MODELVIEW
 #define LEX_PROJECTION                           0x1701      // GL_PROJECTION
 #define LEX_TEXTURE                              0x1702      // GL_TEXTURE
-
 // Primitive assembly draw modes
 #define LEX_LINES                                0x0001      // GL_LINES
 #define LEX_TRIANGLES                            0x0004      // GL_TRIANGLES
@@ -33,7 +32,15 @@
 // GL equivalent data types
 #define LEX_UNSIGNED_BYTE                        0x1401      // GL_UNSIGNED_BYTE
 #define LEX_FLOAT                                0x1406      // GL_FLOAT
-
+#define LEX_INT                                  0x1404      // GL_INT
+#define LEX_SHORT                                0x1402      // GL_SHORT
+#define LEX_DOUBLE                               0x140A      // GL_DOUBLE
+#define LEX_BYTE                                 0x1400      // GL_BYTE
+#define LEX_UNSIGNED_SHORT                       0x1403      // GL_UNSIGNED_SHORT
+#define LEX_UNSIGNED_INT                         0x1405      // GL_UNSIGNED_INT
+#define LEX_TRUE                                 1           // GL_TRUE
+#define LEX_FALSE                                0           // GL_FALSE
+#define LEX_UNSIGNED_INT                         0x1405      // GL_UNSIGNED_INT
 // GL buffer usage hint
 #define LEX_STREAM_DRAW                          0x88E0      // GL_STREAM_DRAW
 #define LEX_STREAM_READ                          0x88E1      // GL_STREAM_READ
@@ -84,10 +91,43 @@
 #define LEX_READ_FRAMEBUFFER                     0x8CA8      // GL_READ_FRAMEBUFFER
 #define LEX_DRAW_FRAMEBUFFER                     0x8CA9      // GL_DRAW_FRAMEBUFFER
 //GL Vertex
-#define LEX_ARRAY_BUFFER                         0x8892
-#define LEX_ELEMENT_ARRAY_BUFFER                 0x8893
+#define LEX_ARRAY_BUFFER                          0x8892
+#define LEX_ELEMENT_ARRAY_BUFFER                  0x8893
 //
-#define LEX_UNSIGNED_INT                         0x1405
-#define LEX_TRUE                                 1
-#define LEX_FALSE                                0
+#define LEX_UNBIND                                0x9999     // Unbind all buffers and arrays
+#define LEX_COLOR_BUFFER_BIT                      0x00004000
+#define LEX_DEPTH_BUFFER_BIT                      0x00000100
+#define LEX_STENCIL_BUFFER_BIT                    0x00000400
+#define LEX_COLOR_CUSTOM                          0x001234
+// Window Modes
+#define LEX_MAXIMIZED_WINDOW                      0x00020008 //GLFW_MAXIMIZED
+#define LEX_MINIMIZED_WINDOW                      0x00020002 //GLFW_ICONIFIED
+#define LEX_HIDE_WINDOW                           0x0002022A //-Lex-//
+#define LEX_FLOAT_WINDOW                          0x00020007 //GLFW_FLOATING
+#define LEX_RESIZABLE_WINDOW                      0x00020003 //GLFW_RESIZABLE
+#define LEX_MOUSE_PASSTHROUGH_WINDOW              0x0002000D //GLFW_MOUSE_PASSTHROUGH
+#define KEX_DECORATED_WINDOW                      0x00020005 //GLFW_DECORATED    
+#define LEX_VISIBLE_WINDOW                        0x00020004 //GLFW_VISIBLE
+#define LEX_FOCUSED_WINDOW                        0x00020001 //GLFW_FOCUSED
+#define LEX_AUTO_ICONIFY_WINDOW                   0x00020006 //GLFW_AUTO_ICONIFY
+#define LEX_TRANSPARENT_FRAMEBUFFER_WINDOW        0x0002000A //GLFW_TRANSPARENT_FRAMEBUFFER
+#define LEX_FOCUS_ON_SHOW                         0x0002000C //GLFW_FOCUS_ON_SHOW   
+#define LEX_SCALE_FRAMEBUFFER_WINDOW              0x0002200D //GLFW_SCALE_FRAMEBUFFER
+
+//Bits 
+#define LEX_RED_BITS                           0x00021001 //GLFW_RED_BITS
+#define LEX_GREEN_BITS                         0x00021002 //GLFW_GREEN_BITS
+#define LEX_BLUE_BITS                          0x00021003 //GLFW_BLUE_BITS
+#define LEX_ALPHA_BITS                         0x00021004 //GLFW_ALPHA_BITS
+#define LEX_ACCUM_RED_BITS                     0x00021007 //GLFW_ACCUM_RED_BITS
+#define LEX_ACCUM_GREEN_BITS                   0x00021008 //GLFW_ACCUM_GREEN_BITS
+#define LEX_ACCUM_BLUE_BITS                    0x00021009 //GLFW_ACCUM_BLUE_BITS
+#define LEX_ACCUM_ALPHA_BITS                   0x0002100A //GLFW_ACCUM_ALPHA_BITS
+#define LEX_DEPTH_BITS                         0x00021005 //GLFW_DEPTH_BITS
+#define LEX_STENCIL_BITS                       0x00021006 //GLFW_STENCIL_BITS
+
+#define LEX_RBGA_MAX_BITS                      0x00021012//Lex//
+#define LEX_RBGA_NORMAL_BITS                      0x00021013//Lex//
+#define LEX_ACCUM_RBGA_MAX_BITS                0x00021014//Lex//
+#define LEX_ACCUM_RBGA_NORMAL_BITS                0x00021015//Lex//
 #endif // !LEX_LIMBO_OPENGL

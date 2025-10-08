@@ -1,53 +1,52 @@
 #pragma once
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
-	typedef struct LexColor {
-		float Red;
-		float Blue;
-		float Green;
-		float Alpha;
-	} LexColor;
-	void LColorClear(LexColor color) {
-		glClearColor(color.Red, color.Green, color.Blue, color.Alpha);
-		glClear(GL_COLOR_BUFFER_BIT);
-	}
-	//Lex Shader Vertex And Fragment
-	GLuint LShaderVer()
-	{
-		return glCreateShader(GL_VERTEX_SHADER);
-	}
-	GLuint LShaderFrag() {
-		return glCreateShader(GL_FRAGMENT_SHADER);
-	}
-	void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex) {
-		glShaderSource(Shader, Size, ShaderVertex,NULL);
-		glCompileShader(Shader);
-	}
-	void LDeleteShader(GLuint Shader) {
-		glDeleteShader(Shader);
-	}
-	void LDeleteShaderDouble(GLuint Shader1, GLuint Shader2) {
-		glDeleteShader(Shader1);
-		glDeleteShader(Shader2);
-	}
-	//Program Shader
-	GLuint LCreateProgram(){
-		return glCreateProgram();
-	}
-	void LAttachShader(GLuint Program,GLuint Vertex,GLuint Fragment) {
-		glAttachShader(Program, Vertex);
-		glAttachShader(Program, Fragment);
-	}
-	void LLinkProgram(GLuint Program) {
-		glLinkProgram(Program);
-	}
-	void LUseProgram(GLuint Program) {
-		glUseProgram(Program);
-	}
-	void LDeleteProgram(GLuint Program) {
-		glDeleteProgram(Program);
-	}
+#ifndef LEX_LIBRARY
+#define LEX_LIBRARY
+typedef struct LexColor {
+	float R; float G; //RED,GREEN
+	float B; float A; //BLUE,ALPHA
+}LexColor;
+#if defined(__cplusplus)
+extern"C" {
+#endif // defined(__cplusplus)
+#include<lexcore.h>
+	void LColorClear(LexColor color);
+	GLuint LShaderVer(void);
+	GLuint LShaderFrag(void);
+	void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex);
+	void LDeleteShader(GLuint Size, GLuint Shader, ...);
+	void LIsShader(GLuint Size, GLuint Shader, ...);
+	GLuint LCreateProgram(void);
+	void LAttachShader(GLuint Program, GLuint Vertex, GLuint Fragment);
+	void LLinkProgram(GLuint Program);
+	void LUseProgram(GLuint Program);
+	void LDeleteProgram(GLuint Program);
+	void LGenVerBuff(GLsizei Size, GLuint* Buffer);
+	void LGenVerArray(GLsizei Size, GLuint* Array);
+	void LBindVerBuff(GLuint Target, GLuint VBO);
+	void LBindVerArrays(GLuint VAO);
+	void LBufferData(GLuint Target, GLuint Use, GLsizeiptr Size, const void* data);
+	void LEnableVerAttribArray(GLuint Index);
+     void LVerAttribPointer(GLuint Index, GLint Size, GLuint Type, GLboolean Bool, GLsizei Sizei);
+	void LDeleteBuffer(GLsizei SizeBuffer, GLuint Buffer, ...);
+	void LIsBuffers(GLsizei Size, GLuint Buffer, ...);
+	void LDeleteVerArray(GLsizei Size, GLuint Array);
+	void LDrawElement(GLuint Mode, GLsizei Size, GLuint Type, const void* indices);
+	void LDrawArray(GLuint Mode, GLint First, GLsizei Size);
+	void LViewport(GLint x, GLint y, GLsizei Width, GLsizei Height);
+	void LUnBind(GLuint Mode);
+	void LexSetPosWindow(int X, int Y);
+	void LSetWindowMode(GLFWwindow* window, int Mode, int ModeBool);
+	void LWindowOpacity(GLFWwindow* window, float Opacity);
+	void LWindowMoniter(GLFWwindow* window, GLFWmonitor* monitor, int X, int Y, int Width, int Height);
+	void LEXLoadGL(void);
+	GLFWwindow* LCreateWindow(int Width, int Height, const char* Title, GLFWmonitor* moniter);
+#if defined(__cplusplus)
+}
+#endif // defined(__cplusplus)
 
+<<<<<<< HEAD
 	//Verex Array and Veretx Buffers And Element Buffers
 	void LGenVerBuff(GLsizei Size,GLuint *Buffer) {
 		*Buffer = 0;
@@ -193,3 +192,6 @@
 		LKEY_RIGHT_SUPER = 347,
 		LKEY_MENU = 348
 	} LexKeyBoard;
+=======
+#endif // !LEX_LIBRARY
+>>>>>>> f7fe02a804a6b8879398312b519c70cb8a491561

@@ -16,24 +16,30 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);\n"
+"   FragColor = vec4(1.0f, 0.3f, 0.02f, 1.0f);\n"
 "}\n\0";
-LexKeyBoard Key;
 int main() {
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Hello Limbo", NULL, NULL);
+	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine",NULL);
+	LSetWindowMode(window, LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
 	glfwMakeContextCurrent(window);
+<<<<<<< HEAD
 	LexLoadGL();
 	glViewport(0, 0, 800, 800);
 	GLuint Vertex, Fragment,Program;
+=======
+	LEXLoadGL();
+	LViewport(0, 0, 800, 800);
+	GLuint Vertex = 0, Fragment = 0, Program;
+>>>>>>> f7fe02a804a6b8879398312b519c70cb8a491561
 	Vertex = LShaderVer();
 	Fragment = LShaderFrag();
 	LShaderSource(Vertex, 1, &vertexShaderSource);
 	LShaderSource(Fragment, 1, &fragmentShaderSource);
 	Program = LCreateProgram();
-	LAttachShader(Program,Vertex, Fragment);
+	LAttachShader(Program, Vertex, Fragment);
 	LLinkProgram(Program);
-	LDeleteShaderDouble(Vertex, Fragment);
+	LDeleteShader(2, Vertex, Fragment);
 	LexColor Color = { 1.0,1.0,1.0,1.0 };
 	float vertices[] = {
 	0.25f,  0.25f, 0.0f,  // top right
@@ -45,21 +51,18 @@ int main() {
 	    0, 1, 3,   // first triangle
 	    1, 2, 3    // second triangle
 	};
-	GLuint VBO,VAO,EBO;
+	GLuint VBO, VAO, EBO;
 	LGenVerArray(1, &VAO);
 	LGenVerBuff(1, &VBO);
 	LGenVerBuff(1, &EBO);
 	LBindVerArrays(VAO);
-	LBindVerBuff(LEX_ARRAY_BUFFER,VBO);
-	LBufferData(LEX_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(vertices), vertices);
-	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER,EBO);
-	LBufferData(LEX_ELEMENT_ARRAY_BUFFER, LEX_STATIC_DRAW,sizeof(indices),indices);
-	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float), (void*)0);
+	LBindVerBuff(LEX_ARRAY_BUFFER, VBO);
+	LBufferData(LEX_ARRAY_BUFFER, LEX_STATIC_DRAW, sizeof(vertices), vertices);
+	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER, EBO);
+	LBufferData(LEX_ELEMENT_ARRAY_BUFFER, LEX_STATIC_DRAW, sizeof(indices), indices);
+	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float));
 	LEnableVerAttribArray(0);
-	LBindVerArrays(0);
-	LBindVerBuff(LEX_ARRAY_BUFFER, 0);
-	LBindVerBuff(LEX_ELEMENT_ARRAY_BUFFER, 0);
-	LBindVerArrays(0);
+	LUnBind(LEX_UNBIND);
 	while (!glfwWindowShouldClose(window)) {
 		LColorClear(Color);
 		LBindVerArrays(VAO);
@@ -69,8 +72,7 @@ int main() {
 		glfwPollEvents();
 	}
 	LDeleteVerArray(1, &VAO);
-	LDeleteBuffer(1, &VBO);
-	LDeleteBuffer(1, &EBO);
+	LDeleteBuffer(2, &VBO, &EBO);
 	LDeleteProgram(Program);
 	glfwDestroyWindow(window);
 	glfwTerminate();
