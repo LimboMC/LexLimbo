@@ -22,11 +22,15 @@ void LEnableVerAttribArray(GLuint Index);
 void LVerAttribPointer(GLuint Index, GLint Size, GLuint Type, GLboolean Bool, GLsizei Sizei);
 void LDeleteBuffer(GLsizei SizeBuffer, GLuint Buffer, ...);
 void LIsBuffers(GLsizei Size, GLuint Buffer, ...);
-void LDeleteVerArray(GLsizei Size, GLuint Array);
+void LDeleteVerArray(GLuint *Array);
 void LDrawElement(GLuint Mode, GLsizei Size, GLuint Type, const void* indices);
 void LDrawArray(GLuint Mode, GLint First, GLsizei Size);
 void LViewport(GLint x, GLint y, GLsizei Width, GLsizei Height);
 void LUnBind(GLuint Mode);
 void LexSetPosWindow(int X, int Y);
-void LSetWindowMode(GLFWwindow* window, int Mode, int ModeBool);
+void LSetWindowMode(GLFWwindow* window, int Mode, GLboolean ModeBool);
+void LWindowOpacity(GLFWwindow* window, float Opacity);
+void LEXLoadGL(void);
+void LSetColorBits(GLuint ModeColorBits);
+GLFWwindow* LInitWindow(int Width, int Height, const char* Title);
 #endif // !LEX_LIMBO_CORE

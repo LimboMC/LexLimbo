@@ -1,4 +1,5 @@
 //-------> OPENGL
+#include<lex.h>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 //-------->Lex
@@ -20,7 +21,7 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "}\n\0";
 int main() {
 	glfwInit();
-	GLFWwindow* window = LCreateWindow(800, 800, "Limbo Engine",NULL);
+	GLFWwindow* window = LInitWindow(800, 800,"Limbo Engine");
 	LSetWindowMode(window, LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
 	glfwMakeContextCurrent(window);
 <<<<<<< HEAD
@@ -40,7 +41,7 @@ int main() {
 	LAttachShader(Program, Vertex, Fragment);
 	LLinkProgram(Program);
 	LDeleteShader(2, Vertex, Fragment);
-	LexColor Color = { 1.0,1.0,1.0,1.0 };
+	LexColor Color = { 1.0f,0.0f,0.0f,1.0f};
 	float vertices[] = {
 	0.25f,  0.25f, 0.0f,  // top right
 	0.25f, -0.25f, 0.0f,  // bottom right
@@ -71,7 +72,7 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	LDeleteVerArray(1, &VAO);
+	LDeleteVerArray(&VAO);
 	LDeleteBuffer(2, &VBO, &EBO);
 	LDeleteProgram(Program);
 	glfwDestroyWindow(window);

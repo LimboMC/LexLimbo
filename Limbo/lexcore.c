@@ -1,6 +1,8 @@
-#include<lexcore.h>
 #include<lex.h>
+#include<lexcore.h>
 #include<stdarg.h>
+#include<lexgl.h>
+#include <stdio.h>
 void LColorClear(LexColor color) {
 	glClearColor(color.R, color.G, color.B, color.A);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -20,7 +22,7 @@ void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVerte
 void LDeleteShader(GLuint Size, GLuint Shader, ...) {
 	va_list Shaders;
 	va_start(Shaders, Shader);
-	for (int i = 0; i < Size; i++) {
+	for (GLuint i = 0; i < Size; i++) {
 		GLuint Sha = va_arg(Shaders, GLuint);
 		glDeleteShader(Sha);
 	}
@@ -29,7 +31,7 @@ void LDeleteShader(GLuint Size, GLuint Shader, ...) {
 void LIsShader(GLuint Size, GLuint Shader, ...) {
 	va_list IsShader;
 	va_start(IsShader, Shader);
-	for (int i = 0; i < Size; i++) {
+	for (GLuint i = 0; i < Size; i++) {
 		GLuint Sha = va_arg(IsShader, GLuint);
 		glIsShader(Sha);
 	}
@@ -76,18 +78,17 @@ void LEnableVerAttribArray(GLuint Index) {
 void LVerAttribPointer(GLuint Index, GLint Size, GLuint Type, GLboolean Bool, GLsizei Sizei) {
 	glVertexAttribPointer(Index, Size, Type, Bool, Sizei, (void*)0);
 }
-void LDeleteBuffer(GLsizei SizeBuffer, GLuint Buffer, ...) {
+void LDeleteBuffer(int SizeBuffer, GLuint* Buffer, ...) {
 	va_list buffer;
-	va_start(buffer, Buffer);
-	GLuint SizeBuf = 1;
+	va_start(buffer, &Buffer);
 	for (int i = 0; i < SizeBuffer; i++) {
-		GLuint Buf = va_arg(buffer, GLuint);
+		GLuint* Buf = va_arg(buffer, GLuint);
 		glDeleteBuffers(1, &Buf);
 	}
 	va_end(buffer);
-	glDeleteBuffers(1, &Buffer);
+	glDeleteBuffers(1,&Buffer);
 }
-void LIsBuffers(GLsizei Size, GLuint Buffer, ...) {
+void LIsBuffers(int Size, GLuint Buffer, ...) {
 	va_list buffer;
 	va_start(buffer, Buffer);
 	for (int i = 0; i < Size; i++) {
@@ -97,8 +98,8 @@ void LIsBuffers(GLsizei Size, GLuint Buffer, ...) {
 	va_end(buffer);
 	glIsBuffer(Buffer);
 }
-void LDeleteVerArray(GLsizei Size, GLuint Array) {
-	glDeleteVertexArrays(Size, &Array);
+void LDeleteVerArray(GLuint *Array) {
+	glDeleteVertexArrays(1,&Array);
 }
 void LDrawElement(GLuint Mode, GLsizei Size, GLuint Type, const void* indices) {
 	glDrawElements(Mode, Size, Type, indices);
@@ -129,14 +130,14 @@ void LexSetPosWindow(int X, int Y) {
 	glfwWindowHint(GLFW_POSITION_X, X);
 	glfwWindowHint(GLFW_POSITION_Y, Y);
 }
-void LSetWindowMode(GLFWwindow* window, int Mode, int ModeBool) {
-	if (Mode == LEX_MAXIMIZED_WINDOW && ModeBool == NULL) {
+void LSetWindowMode(GLFWwindow* window,int Mode,GLboolean ModeBool) {
+	if (Mode == LEX_MAXIMIZED_WINDOW && ModeBool == LEX_FALSE) {
 		glfwMaximizeWindow(window);
 	}
-	else if (Mode == LEX_MINIMIZED_WINDOW && ModeBool == NULL) {
+	else if (Mode == LEX_MINIMIZED_WINDOW && ModeBool == LEX_FALSE) {
 		glfwIconifyWindow(window);
 	}
-	else if (Mode == LEX_HIDE_WINDOW && ModeBool == NULL) {
+	else if (Mode == LEX_HIDE_WINDOW && ModeBool == LEX_FALSE) {
 		glfwHideWindow(window);
 	}
 	else if (Mode == LEX_VISIBLE_WINDOW) {
@@ -170,14 +171,41 @@ void LSetWindowMode(GLFWwindow* window, int Mode, int ModeBool) {
 void LWindowOpacity(GLFWwindow* window, float opacity) {
 	glfwSetWindowOpacity(window, opacity);
 }
-void LWindowMoniter(GLFWwindow* window, int X, int Y, int W, int Height, int RefeshRate) {
-	const GLFWmonitor* monitor = glfwGetWindowMonitor(window);
-	glfwSetWindowMonitor(window, monitor, X, Y, W, Y, RefeshRate);
-}
 void LEXLoadGL(void) {
-	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	gladLoadGLLoader((GLADloadproc)(void*)glfwGetProcAddress);
 }
-GLFWwindow* LCreateWindow(int Width, int Height, const char* Title, GLFWmonitor* moniter) {
-	GLFWwindow* window = glfwCreateWindow(Width, Height, Title, moniter, NULL);
+GLFWwindow* LInitWindow(int Width, int Height, const char* Title) {
+	GLFWwindow* window = glfwCreateWindow(Width, Height, Title,NULL, NULL);
+	if (window == NULL) { 
+	printf("ERROR WINDOW !");
+	return NULL;
+	}
 	return window;
+}
+void LSetColorBits(GLuint ModeColorBits) {
+	if (ModeColorBits == LEX_RBGA_NORMAL_BIT8) {
+		glfwWindowHint(LEX_RED_BITS, 8);
+		glfwWindowHint(LEX_GREEN_BITS, 8);
+		glfwWindowHint(LEX_BLUE_BITS, 8);
+		glfwWindowHint(LEX_ALPHA_BITS, 8);
+	}
+	else if (ModeColorBits == LEX_RBGA_NORMAL_BIT10) {
+		glfwWindowHint(LEX_RED_BITS, 10);
+		glfwWindowHint(LEX_GREEN_BITS, 10);
+		glfwWindowHint(LEX_BLUE_BITS, 10);
+		glfwWindowHint(LEX_ALPHA_BITS, 10);
+	}
+	else if (ModeColorBits == LEX_RBGA16_BITS) {
+		glfwWindowHint(LEX_RED_BITS, 16);
+		glfwWindowHint(LEX_GREEN_BITS, 16);
+		glfwWindowHint(LEX_BLUE_BITS, 16);
+		glfwWindowHint(LEX_ALPHA_BITS, 16);
+	}
+	else if (ModeColorBits == LEX_RBGA10_A2_BITS) {
+		glfwWindowHint(LEX_RED_BITS, 10);
+		glfwWindowHint(LEX_GREEN_BITS, 10);
+		glfwWindowHint(LEX_BLUE_BITS, 10);
+		glfwWindowHint(LEX_ALPHA_BITS, 2);
+	}
+	else printf("ERROR : MODE COLOR NOT SUPPORT !");
 }

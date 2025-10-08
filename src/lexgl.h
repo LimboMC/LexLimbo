@@ -127,7 +127,8 @@
 #define LEX_STENCIL_BITS                       0x00021006 //GLFW_STENCIL_BITS
 
 #define LEX_RBGA_MAX_BITS                      0x00021012//Lex//
-#define LEX_RBGA_NORMAL_BITS                      0x00021013//Lex//
-#define LEX_ACCUM_RBGA_MAX_BITS                0x00021014//Lex//
-#define LEX_ACCUM_RBGA_NORMAL_BITS                0x00021015//Lex//
+#define LEX_RBGA_NORMAL_BIT8                   0x00021013//Lex//
+#define LEX_RBGA_NORMAL_BIT10                  0x00021014//Lex//
+#define LEX_RBGA10_A2_BITS                     0x00021015//Lex//
+#define LEX_RBGA16_BITS                        0x00021012//Lex//
 #endif // !LEX_LIMBO_OPENGL

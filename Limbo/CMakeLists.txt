@@ -21,5 +21,9 @@ target_link_libraries(Limbo PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../lib/glfw3.lib
 )
 if(MSVC)
-    target_compile_options(Limbo PRIVATE /MD)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(Limbo PRIVATE /MDd)
+    else()
+        target_compile_options(Limbo PRIVATE /MD)
+    endif()
 endif()
