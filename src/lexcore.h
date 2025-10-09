@@ -3,6 +3,15 @@
 #define LEX_LIMBO_CORE
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
+void LCreateWindow(int Width, int Height, const char* Title);
+void LexSetPosWindow(int X, int Y);
+void LSetWindowMode(int Mode, GLboolean ModeBool);
+void LWindowOpacity(float Opacity);
+void LMakeCotext(void);
+int LWindowShouldClose(void);
+void LPollSwapWindow(void);
+void LDestroyWindow(void);
+void LSetColorBits(GLuint ModeColorBits);
 GLuint LShaderVer(void);
 GLuint LShaderFrag(void);
 void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex);
@@ -27,10 +36,4 @@ void LDrawElement(GLuint Mode, GLsizei Size, GLuint Type, const void* indices);
 void LDrawArray(GLuint Mode, GLint First, GLsizei Size);
 void LViewport(GLint x, GLint y, GLsizei Width, GLsizei Height);
 void LUnBind(GLuint Mode);
-void LexSetPosWindow(int X, int Y);
-void LSetWindowMode(GLFWwindow* window, int Mode, GLboolean ModeBool);
-void LWindowOpacity(GLFWwindow* window, float Opacity);
-void LEXLoadGL(void);
-void LSetColorBits(GLuint ModeColorBits);
-GLFWwindow* LInitWindow(int Width, int Height, const char* Title);
 #endif // !LEX_LIMBO_CORE

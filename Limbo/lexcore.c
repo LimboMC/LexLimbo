@@ -7,6 +7,105 @@ void LColorClear(LexColor color) {
 	glClearColor(color.R, color.G, color.B, color.A);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
+//Window
+typedef struct LEXCORE {
+	GLFWwindow* Window;
+}LEXCORE;
+LEXCORE Core;
+void LCreateWindow(int Width, int Height, const char* Title) {
+	Core.Window = glfwCreateWindow(Width, Height, Title, NULL, NULL);
+	if (Core.Window == NULL) {
+		printf("ERROR WINDOW !");
+		return NULL;
+	}
+	return Core.Window;
+}
+void LMakeCotext(void) {
+	glfwMakeContextCurrent(Core.Window);
+	gladLoadGLLoader((GLADloadproc)(void*)glfwGetProcAddress);
+}
+int LWindowShouldClose(void) {
+	glfwWindowShouldClose(Core.Window);
+}
+void LPollSwapWindow(void) {
+	glfwSwapBuffers(Core.Window);
+	glfwPollEvents();
+}
+void LDestroyWindow(void) {
+	glfwDestroyWindow(Core.Window);
+}
+void LSetColorBits(GLuint ModeColorBits) {
+	if (ModeColorBits == LEX_RBGA_NORMAL_BIT8) {
+		glfwWindowHint(LEX_RED_BITS, 8);
+		glfwWindowHint(LEX_GREEN_BITS, 8);
+		glfwWindowHint(LEX_BLUE_BITS, 8);
+		glfwWindowHint(LEX_ALPHA_BITS, 8);
+	}
+	else if (ModeColorBits == LEX_RBGA_NORMAL_BIT10) {
+		glfwWindowHint(LEX_RED_BITS, 10);
+		glfwWindowHint(LEX_GREEN_BITS, 10);
+		glfwWindowHint(LEX_BLUE_BITS, 10);
+		glfwWindowHint(LEX_ALPHA_BITS, 10);
+	}
+	else if (ModeColorBits == LEX_RBGA16_BITS) {
+		glfwWindowHint(LEX_RED_BITS, 16);
+		glfwWindowHint(LEX_GREEN_BITS, 16);
+		glfwWindowHint(LEX_BLUE_BITS, 16);
+		glfwWindowHint(LEX_ALPHA_BITS, 16);
+	}
+	else if (ModeColorBits == LEX_RBGA10_A2_BITS) {
+		glfwWindowHint(LEX_RED_BITS, 10);
+		glfwWindowHint(LEX_GREEN_BITS, 10);
+		glfwWindowHint(LEX_BLUE_BITS, 10);
+		glfwWindowHint(LEX_ALPHA_BITS, 2);
+	}
+	else printf("ERROR : MODE COLOR NOT SUPPORT !");
+}
+void LexSetPosWindow(int X, int Y) {
+	glfwWindowHint(GLFW_POSITION_X, X);
+	glfwWindowHint(GLFW_POSITION_Y, Y);
+}
+void LSetWindowMode(int Mode, GLboolean ModeBool) {
+	if (Mode == LEX_MAXIMIZED_WINDOW && ModeBool == LEX_FALSE) {
+		glfwMaximizeWindow(Core.Window);
+	}
+	else if (Mode == LEX_MINIMIZED_WINDOW && ModeBool == LEX_FALSE) {
+		glfwIconifyWindow(Core.Window);
+	}
+	else if (Mode == LEX_HIDE_WINDOW && ModeBool == LEX_FALSE) {
+		glfwHideWindow(Core.Window);
+	}
+	else if (Mode == LEX_VISIBLE_WINDOW) {
+		glfwWindowHint(LEX_VISIBLE_WINDOW, ModeBool);
+	}
+	else if (Mode == LEX_FLOAT_WINDOW) {
+		glfwWindowHint(LEX_FLOAT_WINDOW, ModeBool);
+	}
+	else if (Mode == LEX_MOUSE_PASSTHROUGH_WINDOW) {
+		glfwWindowHint(LEX_MOUSE_PASSTHROUGH_WINDOW, ModeBool);
+	}
+	else if (Mode == LEX_FOCUSED_WINDOW) {
+		glfwWindowHint(LEX_FOCUSED_WINDOW, ModeBool);
+	}
+	else if (Mode == LEX_TRANSPARENT_FRAMEBUFFER_WINDOW) {
+		glfwWindowHint(LEX_TRANSPARENT_FRAMEBUFFER_WINDOW, ModeBool);
+	}
+	else if (Mode == LEX_RESIZABLE_WINDOW) {
+		glfwWindowHint(LEX_RESIZABLE_WINDOW, ModeBool);
+	}
+	else if (Mode == GLFW_FOCUS_ON_SHOW) {
+		glfwWindowHint(GLFW_FOCUS_ON_SHOW, ModeBool);
+	}
+	else if (Mode == LEX_AUTO_ICONIFY_WINDOW) {
+		glfwWindowHint(LEX_AUTO_ICONIFY_WINDOW, ModeBool);
+	}
+	else {
+		printf("Error: Mode Window Size Not Found\n");
+	}
+}
+void LWindowOpacity(float opacity) {
+	glfwSetWindowOpacity(Core.Window, opacity);
+}
 //Lex Shader Vertex And Fragment
 GLuint LShaderVer(void)
 {
@@ -125,87 +224,4 @@ void LUnBind(GLuint Mode) {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
-}
-void LexSetPosWindow(int X, int Y) {
-	glfwWindowHint(GLFW_POSITION_X, X);
-	glfwWindowHint(GLFW_POSITION_Y, Y);
-}
-void LSetWindowMode(GLFWwindow* window,int Mode,GLboolean ModeBool) {
-	if (Mode == LEX_MAXIMIZED_WINDOW && ModeBool == LEX_FALSE) {
-		glfwMaximizeWindow(window);
-	}
-	else if (Mode == LEX_MINIMIZED_WINDOW && ModeBool == LEX_FALSE) {
-		glfwIconifyWindow(window);
-	}
-	else if (Mode == LEX_HIDE_WINDOW && ModeBool == LEX_FALSE) {
-		glfwHideWindow(window);
-	}
-	else if (Mode == LEX_VISIBLE_WINDOW) {
-		glfwWindowHint(LEX_VISIBLE_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_FLOAT_WINDOW) {
-		glfwWindowHint(LEX_FLOAT_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_MOUSE_PASSTHROUGH_WINDOW) {
-		glfwWindowHint(LEX_MOUSE_PASSTHROUGH_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_FOCUSED_WINDOW) {
-		glfwWindowHint(LEX_FOCUSED_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_TRANSPARENT_FRAMEBUFFER_WINDOW) {
-		glfwWindowHint(LEX_TRANSPARENT_FRAMEBUFFER_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_RESIZABLE_WINDOW) {
-		glfwWindowHint(LEX_RESIZABLE_WINDOW, ModeBool);
-	}
-	else if (Mode == GLFW_FOCUS_ON_SHOW) {
-		glfwWindowHint(GLFW_FOCUS_ON_SHOW, ModeBool);
-	}
-	else if (Mode == LEX_AUTO_ICONIFY_WINDOW) {
-		glfwWindowHint(LEX_AUTO_ICONIFY_WINDOW, ModeBool);
-	}
-	else {
-		printf("Error: Mode Window Size Not Found\n");
-	}
-}
-void LWindowOpacity(GLFWwindow* window, float opacity) {
-	glfwSetWindowOpacity(window, opacity);
-}
-void LEXLoadGL(void) {
-	gladLoadGLLoader((GLADloadproc)(void*)glfwGetProcAddress);
-}
-GLFWwindow* LInitWindow(int Width, int Height, const char* Title) {
-	GLFWwindow* window = glfwCreateWindow(Width, Height, Title,NULL, NULL);
-	if (window == NULL) { 
-	printf("ERROR WINDOW !");
-	return NULL;
-	}
-	return window;
-}
-void LSetColorBits(GLuint ModeColorBits) {
-	if (ModeColorBits == LEX_RBGA_NORMAL_BIT8) {
-		glfwWindowHint(LEX_RED_BITS, 8);
-		glfwWindowHint(LEX_GREEN_BITS, 8);
-		glfwWindowHint(LEX_BLUE_BITS, 8);
-		glfwWindowHint(LEX_ALPHA_BITS, 8);
-	}
-	else if (ModeColorBits == LEX_RBGA_NORMAL_BIT10) {
-		glfwWindowHint(LEX_RED_BITS, 10);
-		glfwWindowHint(LEX_GREEN_BITS, 10);
-		glfwWindowHint(LEX_BLUE_BITS, 10);
-		glfwWindowHint(LEX_ALPHA_BITS, 10);
-	}
-	else if (ModeColorBits == LEX_RBGA16_BITS) {
-		glfwWindowHint(LEX_RED_BITS, 16);
-		glfwWindowHint(LEX_GREEN_BITS, 16);
-		glfwWindowHint(LEX_BLUE_BITS, 16);
-		glfwWindowHint(LEX_ALPHA_BITS, 16);
-	}
-	else if (ModeColorBits == LEX_RBGA10_A2_BITS) {
-		glfwWindowHint(LEX_RED_BITS, 10);
-		glfwWindowHint(LEX_GREEN_BITS, 10);
-		glfwWindowHint(LEX_BLUE_BITS, 10);
-		glfwWindowHint(LEX_ALPHA_BITS, 2);
-	}
-	else printf("ERROR : MODE COLOR NOT SUPPORT !");
 }

@@ -21,18 +21,11 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "}\n\0";
 int main() {
 	glfwInit();
-	GLFWwindow* window = LInitWindow(800, 800,"Limbo Engine");
-	LSetWindowMode(window, LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
-	glfwMakeContextCurrent(window);
-<<<<<<< HEAD
-	LexLoadGL();
-	glViewport(0, 0, 800, 800);
-	GLuint Vertex, Fragment,Program;
-=======
-	LEXLoadGL();
+	LCreateWindow(800, 800,"Limbo Engine");
+	LSetWindowMode(LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
+	LMakeCotext();
 	LViewport(0, 0, 800, 800);
 	GLuint Vertex = 0, Fragment = 0, Program;
->>>>>>> f7fe02a804a6b8879398312b519c70cb8a491561
 	Vertex = LShaderVer();
 	Fragment = LShaderFrag();
 	LShaderSource(Vertex, 1, &vertexShaderSource);
@@ -64,18 +57,18 @@ int main() {
 	LVerAttribPointer(0, 3, LEX_FLOAT, LEX_FALSE, 3 * sizeof(float));
 	LEnableVerAttribArray(0);
 	LUnBind(LEX_UNBIND);
-	while (!glfwWindowShouldClose(window)) {
+	while (!LWindowShouldClose()) {
 		LColorClear(Color);
 		LBindVerArrays(VAO);
 		LUseProgram(Program);
 		LDrawElement(LEX_TRIANGLES, 6, LEX_UNSIGNED_INT, 0);
-		glfwSwapBuffers(window);
+		LPollSwapWindow();
 		glfwPollEvents();
 	}
 	LDeleteVerArray(&VAO);
 	LDeleteBuffer(2, &VBO, &EBO);
 	LDeleteProgram(Program);
-	glfwDestroyWindow(window);
+	LDestroyWindow();
 	glfwTerminate();
 	return 0;
 }
