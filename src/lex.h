@@ -121,26 +121,96 @@ LKEY_KP_ADD = 334,           //KeyPad_+
 LKEY_KP_ENTER = 335,         //KeyPad_ENTER
 LKEY_KP_EQUAL = 336,         //KeyPad_=
 }LexInput;
-typedef struct LexSetKey {
-	int key;
-	int scancode;
-	int action;
-	int mods;
-}LexSetKey;
+typedef enum {
+LEX_MOUSE_BUTTON_LEFT = 0,
+LEX_MOUSE_BUTTON_RIGHT = 1,
+LEX_MOUSE_BUTTON_MIDDLE = 2,
+LEX_MOUSE_BUTTON_4 = 3,
+LEX_MOUSE_BUTTON_5 = 4,
+LEX_MOUSE_BUTTON_6 = 5,
+LEX_MOUSE_BUTTON_7 = 6,
+LEX_MOUSE_BUTTON_LAST = 7,
+}LexMouse;
+typedef enum {
+LEX_RELEASE = 0,
+LEX_PRESS = 1,
+LEX_REPEAT = 2,
+}LexStatus;
+typedef enum {
+LCURSOR_NORMAL = 0x00034001,
+LCURSOR_HIDDEN = 0x00034002,
+LCURSOR_DISABLED = 0x00034003,
+LCURSOR_CAPTURED = 0x00034004,
+}LexModeCursor;
+typedef enum {
+LEX_JOYSTICK_1 = 0,
+LEX_JOYSTICK_2 = 1,
+LEX_JOYSTICK_3 = 2,
+LEX_JOYSTICK_4 = 3,
+LEX_JOYSTICK_5 = 4,
+LEX_JOYSTICK_6 = 5,
+LEX_JOYSTICK_7 = 6,
+LEX_JOYSTICK_8 = 7,
+LEX_JOYSTICK_9 = 8,
+LEX_JOYSTICK_10 = 9,
+LEX_JOYSTICK_11 = 10,
+LEX_JOYSTICK_12 = 11,
+LEX_JOYSTICK_13 = 12,
+LEX_JOYSTICK_14 = 13,
+LEX_JOYSTICK_15 = 14,
+LEX_JOYSTICK_16 = 15,
+}LexJoystick;
+typedef enum {
+LEX_GAMEPAD_BUTTON_A = 0,
+LEX_GAMEPAD_BUTTON_B = 1,
+LEX_GAMEPAD_BUTTON_X = 2,
+LEX_GAMEPAD_BUTTON_Y = 3,
+LEX_GAMEPAD_BUTTON_LEFT_BUMPER = 4,
+LEX_GAMEPAD_BUTTON_RIGHT_BUMPER = 5,
+LEX_GAMEPAD_BUTTON_BACK = 6,
+LEX_GAMEPAD_BUTTON_START = 7,
+LEX_GAMEPAD_BUTTON_GUIDE = 8,
+LEX_GAMEPAD_BUTTON_LEFT_THUMB = 9,
+LEX_GAMEPAD_BUTTON_RIGHT_THUMB = 10,
+LEX_GAMEPAD_BUTTON_DPAD_UP = 11,
+LEX_GAMEPAD_BUTTON_DPAD_RIGHT = 12,
+LEX_GAMEPAD_BUTTON_DPAD_DOWN = 13,
+LEX_GAMEPAD_BUTTON_DPAD_LEFT = 14,
+LEX_GAMEPAD_BUTTON_CROSS = 0,
+LEX_GAMEPAD_BUTTON_CIRCLE = 1,
+LEX_GAMEPAD_BUTTON_SQUARE = 2,
+LEX_GAMEPAD_BUTTON_TRIANGLE =  3,
+}LexGamePad;
+typedef struct LexTexture {
+	unsigned char* Image;
+	int Width;
+	int Height;
+} LexTexture;
+typedef struct LexLabel {
+	double X,Y;
+	int Width,Height;
+	LexColor Color;
+	LexTexture Texture;
+} LexLabel;
+typedef struct LexButton {
+	double X,Y;
+	int Width, Height;
+	LexColor Color;
+	LexTexture Texture;
+} LexButton;
 #if defined(__cplusplus)
 extern"C" {
 #endif // defined(__cplusplus)
 	void LColorClear(LexColor color);
 	void LexSetPosWindow(int X, int Y);
-	void LSetWindowMode(int Mode, GLboolean ModeBool);
-	void LMakeContext(void);
+	void LSetWindowMode(int ModeWindow,int ModeBool);
+	void LSetCursorMode(int ModeCursor);
 	void LWindowOpacity(float Opacity);
 	int LWindowShouldClose(void);
 	void LPollSwapWindow(void);
 	void LDestroyWindow(void);
 	void LCreateWindow(int Width, int Height, const char* Title);
-	GLuint LShaderVer(void);
-	GLuint LShaderFrag(void);
+	void LShaderVerFrag(GLuint* Ver, GLuint* Frag);
 	void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex);
 	void LDeleteShader(GLuint Size, GLuint Shader, ...);
 	void LIsShader(GLuint Size, GLuint Shader, ...);
@@ -149,11 +219,12 @@ extern"C" {
 	void LLinkProgram(GLuint Program);
 	void LUseProgram(GLuint Program);
 	void LDeleteProgram(GLuint Program);
-	void LGenVerBuff(GLsizei Size, GLuint* Buffer);
+	void LGenVerBuff(int Size, GLuint* Buffer);
 	void LGenVerArray(GLsizei Size, GLuint* Array);
 	void LBindVerBuff(GLuint Target, GLuint VBO);
 	void LBindVerArrays(GLuint VAO);
-	void LBufferData(GLuint Target, GLuint Use, GLsizeiptr Size, const void* data);
+	void LBufferData(GLuint Target, GLuint Uses, GLsizeiptr Size, const void* data);
+	void LSetStatusWindow(int Mode);
 	void LEnableVerAttribArray(GLuint Index);
      void LVerAttribPointer(GLuint Index, GLint Size, GLuint Type, GLboolean Bool, GLsizei Sizei);
 	void LDeleteBuffer(int SizeBuffer, GLuint* Buffer, ...);
@@ -163,152 +234,13 @@ extern"C" {
 	void LDrawArray(GLuint Mode, GLint First, GLsizei Size);
 	void LViewport(GLint x, GLint y, GLsizei Width, GLsizei Height);
 	void LUnBind(GLuint Mode);
+	void LWaitTimeEventOut(double TimeWait);
+	void LWaitEvent(void);
+	void LDestroyCursor(GLFWcursor* Cursor);
+	int LGetKeyInput(int Key);
+	//GUI LEX
+
 #if defined(__cplusplus)
 }
 #endif // defined(__cplusplus)
-	//Verex Array and Veretx Buffers And Element Buffers
-	void LGenVerBuff(GLsizei Size,GLuint *Buffer) {
-		*Buffer = 0;
-		glGenBuffers(Size, Buffer);
-	}
-	void LGenVerArray(GLsizei Size, GLuint *Array) {
-		*Array = 0;
-		glGenVertexArrays(Size, Array);
-	}
-	void LBindVerBuff(GLuint Target,GLuint VBO) {
-		glBindBuffer(Target,VBO);
-	}
-	void LBindVerArrays(GLuint VAO) {
-		glBindVertexArray(VAO);
-	}
-	void LBufferData(GLuint Target, GLuint Use, GLsizeiptr Size,const void *data) {
-		glBufferData(Target, Size, data, Use);
-	}
-	void LEnableVerAttribArray(GLuint Index) {
-		glEnableVertexAttribArray(Index);
-	}
-	void LVerAttribPointer(GLuint Index,GLint Size,GLuint Type,GLboolean Bool,GLsizei Sizei,const void *Pointer ) {
-		glVertexAttribPointer(Index, Size, Type, Bool, Sizei, Pointer);
-	}
-	void LDeleteBuffer(GLsizei Size,GLuint Buffer) {
-		glDeleteBuffers(Size,&Buffer);
-	}
-	void LDeleteVerArray(GLsizei Size, GLuint Array) {
-		glDeleteVertexArrays(Size, &Array);
-	}
-	void LDrawElement(GLuint Mode,GLsizei Size,GLuint Type,const void * indices) {
-		glDrawElements(Mode, Size, Type, indices);
-	}
-	void LexLoadGL() {
-		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	}
-	typedef enum {
-		LKey_0 = 48,
-		LKey_1 = 49,
-		LKey_2 = 50,
-		LKey_3 = 51,
-		LKey_4 = 52,
-		LKey_5 = 53,
-		LKey_6 = 54,
-		LKey_7 = 55,
-		LKey_8 = 56,
-		LKey_9 = 57,
-		LKey_A = 65,
-		LKey_B = 66,
-		LKey_C = 67,
-		LKey_D = 68,
-		LKey_E = 69,
-		LKey_F = 70,
-		LKey_G = 71,
-		LKey_H = 72,
-		LKey_I = 73,
-		LKey_J = 74,
-		LKey_K = 75,
-		LKey_L = 76,
-		LKey_M = 77,
-		LKey_N = 78,
-		LKey_O = 79,
-		LKey_P = 80,
-		LKey_Q = 81,
-		LKey_R = 82,
-		LKey_S = 83,
-		LKey_T = 84,
-		LKey_U = 85,
-		LKey_V = 86,
-		LKey_W = 87,
-		LKey_X = 88,
-		LKey_Y = 89,
-		LKey_Z = 90,
-		//Function keys
-		LKEY_ESCAPE = 256,
-		LKEY_ENTER = 257,
-		LKEY_TAB = 258,
-		LKEY_BACKSPACE = 259,
-		LKEY_INSERT = 260,
-		LKEY_DELETE = 261,
-		LKEY_RIGHT = 262,
-		LKEY_LEFT = 263,
-		LKEY_DOWN = 264,
-		LKEY_UP = 265,
-		LKEY_PAGE_UP = 266,
-		LKEY_PAGE_DOWN = 267,
-		LKEY_HOME = 268,
-		LKEY_END = 269,
-		LKEY_CAPS_LOCK = 280,
-		LKEY_SCROLL_LOCK = 281,
-		LKEY_NUM_LOCK = 282,
-		LKEY_PRINT_SCREEN = 283,
-		LKEY_PAUSE = 284,
-		LKEY_F1 = 290,
-		LKEY_F2 = 291,
-		LKEY_F3 = 292,
-		LKEY_F4 = 293,
-		LKEY_F5 = 294,
-		LKEY_F6 = 295,
-		LKEY_F7 = 296,
-		LKEY_F8 = 297,
-		LKEY_F9 = 298,
-		LKEY_F10 = 299,
-		LKEY_F11 = 300,
-		LKEY_F12 = 301,
-		LKEY_F13 = 302,
-		LKEY_F14 = 303,
-		LKEY_F15 = 304,
-		LKEY_F16 = 305,
-		LKEY_F17 = 306,
-		LKEY_F18 = 307,
-		LKEY_F19 = 308,
-		LKEY_F20 = 309,
-		LKEY_F21 = 310,
-		LKEY_F22 = 311,
-		LKEY_F23 = 312,
-		LKEY_F24 = 313,
-		LKEY_F25 = 314,
-		LKEY_KP_0 = 320,
-		LKEY_KP_1 = 321,
-		LKEY_KP_2 = 322,
-		LKEY_KP_3 = 323,
-		LKEY_KP_4 = 324,
-		LKEY_KP_5 = 325,
-		LKEY_KP_6 = 326,
-		LKEY_KP_7 = 327,
-		LKEY_KP_8 = 328,
-		LKEY_KP_9 = 329,
-		LKEY_KP_DECIMAL = 330,
-		LKEY_KP_DIVIDE = 331,
-		LKEY_KP_MULTIPLY = 332,
-		LKEY_KP_SUBTRACT = 333,
-		LKEY_KP_ADD = 334,
-		LKEY_KP_ENTER = 335,
-		LKEY_KP_EQUA = 336,
-		LKEY_LEFT_SHIFT = 340,
-		LKEY_LEFT_CONTROL = 341,
-		LKEY_LEFT_ALT = 342,
-		LKEY_LEFT_SUPER = 343,
-		LKEY_RIGHT_SHIFT = 344,
-		LKEY_RIGHT_CONTROL = 345,
-		LKEY_RIGHT_ALT = 346,
-		LKEY_RIGHT_SUPER = 347,
-		LKEY_MENU = 348
-	} LexKeyBoard;
 #endif // !LEX_LIBRARY

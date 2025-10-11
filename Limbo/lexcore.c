@@ -2,27 +2,42 @@
 #include<lexcore.h>
 #include<stdarg.h>
 #include<lexgl.h>
-#include <stdio.h>
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
 void LColorClear(LexColor color) {
 	glClearColor(color.R, color.G, color.B, color.A);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 //Window
+///////----------------
 typedef struct LEXCORE {
 	GLFWwindow* Window;
 }LEXCORE;
 LEXCORE Core;
+///////----------------
+////--Function Core--//
 void LCreateWindow(int Width, int Height, const char* Title) {
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	Core.Window = glfwCreateWindow(Width, Height, Title, NULL, NULL);
 	if (Core.Window == NULL) {
 		printf("ERROR WINDOW !");
-		return NULL;
 	}
-	return Core.Window;
 }
-void LMakeCotext(void) {
-	glfwMakeContextCurrent(Core.Window);
-	gladLoadGLLoader((GLADloadproc)(void*)glfwGetProcAddress);
+void LSetCursorMode(int ModeCursor) {
+	if(ModeCursor == LCURSOR_CAPTURED)
+		glfwSetInputMode(Core.Window, GLFW_CURSOR, GLFW_CURSOR_CAPTURED);
+	else if(ModeCursor == LCURSOR_DISABLED)
+		glfwSetInputMode(Core.Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	else if(ModeCursor == LCURSOR_HIDDEN)
+		glfwSetInputMode(Core.Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	else if(ModeCursor == LCURSOR_NORMAL)
+		glfwSetInputMode(Core.Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	else
+		printf("ERROR : MODE CURSOR NOT SUPPORT !");
 }
 int LWindowShouldClose(void) {
 	glfwWindowShouldClose(Core.Window);
@@ -33,6 +48,7 @@ void LPollSwapWindow(void) {
 }
 void LDestroyWindow(void) {
 	glfwDestroyWindow(Core.Window);
+	glfwTerminate();
 }
 void LSetColorBits(GLuint ModeColorBits) {
 	if (ModeColorBits == LEX_RBGA_NORMAL_BIT8) {
@@ -65,39 +81,18 @@ void LexSetPosWindow(int X, int Y) {
 	glfwWindowHint(GLFW_POSITION_X, X);
 	glfwWindowHint(GLFW_POSITION_Y, Y);
 }
-void LSetWindowMode(int Mode, GLboolean ModeBool) {
-	if (Mode == LEX_MAXIMIZED_WINDOW && ModeBool == LEX_FALSE) {
+void LSetWindowMode(int ModeWindow, int ModeBool) {
+	glfwWindowHint(ModeWindow, ModeBool);
+}
+void LSetStatusWindow(int Mode) {
+	if (Mode == LEX_MAXIMIZED_WINDOW) {
 		glfwMaximizeWindow(Core.Window);
 	}
-	else if (Mode == LEX_MINIMIZED_WINDOW && ModeBool == LEX_FALSE) {
+	else if (Mode == LEX_MINIMIZED_WINDOW) {
 		glfwIconifyWindow(Core.Window);
 	}
-	else if (Mode == LEX_HIDE_WINDOW && ModeBool == LEX_FALSE) {
+	else if (Mode == LEX_HIDE_WINDOW) {
 		glfwHideWindow(Core.Window);
-	}
-	else if (Mode == LEX_VISIBLE_WINDOW) {
-		glfwWindowHint(LEX_VISIBLE_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_FLOAT_WINDOW) {
-		glfwWindowHint(LEX_FLOAT_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_MOUSE_PASSTHROUGH_WINDOW) {
-		glfwWindowHint(LEX_MOUSE_PASSTHROUGH_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_FOCUSED_WINDOW) {
-		glfwWindowHint(LEX_FOCUSED_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_TRANSPARENT_FRAMEBUFFER_WINDOW) {
-		glfwWindowHint(LEX_TRANSPARENT_FRAMEBUFFER_WINDOW, ModeBool);
-	}
-	else if (Mode == LEX_RESIZABLE_WINDOW) {
-		glfwWindowHint(LEX_RESIZABLE_WINDOW, ModeBool);
-	}
-	else if (Mode == GLFW_FOCUS_ON_SHOW) {
-		glfwWindowHint(GLFW_FOCUS_ON_SHOW, ModeBool);
-	}
-	else if (Mode == LEX_AUTO_ICONIFY_WINDOW) {
-		glfwWindowHint(LEX_AUTO_ICONIFY_WINDOW, ModeBool);
 	}
 	else {
 		printf("Error: Mode Window Size Not Found\n");
@@ -107,12 +102,10 @@ void LWindowOpacity(float opacity) {
 	glfwSetWindowOpacity(Core.Window, opacity);
 }
 //Lex Shader Vertex And Fragment
-GLuint LShaderVer(void)
+void LShaderVerFrag(GLuint *Ver,GLuint *Frag)
 {
-	return glCreateShader(GL_VERTEX_SHADER);
-}
-GLuint LShaderFrag(void) {
-	return glCreateShader(GL_FRAGMENT_SHADER);
+	*Ver = glCreateShader(GL_VERTEX_SHADER);
+	*Frag = glCreateShader(GL_FRAGMENT_SHADER);
 }
 void LShaderSource(GLuint Shader, GLsizei Size, const GLchar* const* ShaderVertex) {
 	glShaderSource(Shader, Size, ShaderVertex, NULL);
@@ -154,7 +147,7 @@ void LDeleteProgram(GLuint Program) {
 	glDeleteProgram(Program);
 }
 //Verex Array and Veretx Buffers And Element Buffers
-void LGenVerBuff(GLsizei Size, GLuint* Buffer) {
+void LGenVerBuff(int Size, GLuint* Buffer) {
 	*Buffer = 0;
 	glGenBuffers(Size, Buffer);
 }
@@ -168,8 +161,8 @@ void LBindVerBuff(GLuint Target, GLuint VBO) {
 void LBindVerArrays(GLuint VAO) {
 	glBindVertexArray(VAO);
 }
-void LBufferData(GLuint Target, GLuint Use, GLsizeiptr Size, const void* data) {
-	glBufferData(Target, Size, data, Use);
+void LBufferData(GLuint Target, GLuint Uses, GLsizeiptr Size, const void* data) {
+	glBufferData(Target,Size,data, Uses);
 }
 void LEnableVerAttribArray(GLuint Index) {
 	glEnableVertexAttribArray(Index);
@@ -207,6 +200,8 @@ void LDrawArray(GLuint Mode, GLint First, GLsizei Size) {
 	glDrawArrays(Mode, First, Size);
 }
 void LViewport(GLint x, GLint y, GLsizei Width, GLsizei Height) {
+	glfwMakeContextCurrent(Core.Window);
+	gladLoadGLLoader((GLADloadproc)(void*)glfwGetProcAddress);
 	glViewport(x, y, Width, Height);
 }
 void LUnBind(GLuint Mode) {
@@ -224,4 +219,16 @@ void LUnBind(GLuint Mode) {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
+}
+void LWaitEvent(void) {
+	glfwWaitEvents();
+}
+void LWaitTimeEventOut(double TimeWait) {
+	glfwWaitEventsTimeout(TimeWait);
+}
+void LDestroyCursor(GLFWcursor *Cursor) {
+	glfwDestroyCursor(Cursor);
+}
+int LGetKeyInput(int Key) {
+	return glfwGetKey(Core.Window,Key);
 }

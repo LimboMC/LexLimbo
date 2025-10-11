@@ -1,13 +1,11 @@
 //-------> OPENGL
 #include<lex.h>
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
 //-------->Lex
 #include<lex.h>
 #include<lexgl.h>
 //________//
 #include<stdio.h>
-const char* vertexShaderSource = "#version 460 core\n"
+const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
 "void main()\n"
 "{\n"
@@ -19,15 +17,11 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "{\n"
 "   FragColor = vec4(1.0f, 0.3f, 0.02f, 1.0f);\n"
 "}\n\0";
-int main() {
-	glfwInit();
+int main(void) {
 	LCreateWindow(800, 800,"Limbo Engine");
-	LSetWindowMode(LEX_RESIZABLE_WINDOW|LEX_FLOAT_WINDOW, GLFW_TRUE);
-	LMakeCotext();
 	LViewport(0, 0, 800, 800);
-	GLuint Vertex = 0, Fragment = 0, Program;
-	Vertex = LShaderVer();
-	Fragment = LShaderFrag();
+	GLuint Vertex, Fragment, Program;
+	LShaderVerFrag(&Vertex, &Fragment);
 	LShaderSource(Vertex, 1, &vertexShaderSource);
 	LShaderSource(Fragment, 1, &fragmentShaderSource);
 	Program = LCreateProgram();
@@ -47,7 +41,7 @@ int main() {
 	};
 	GLuint VBO, VAO, EBO;
 	LGenVerArray(1, &VAO);
-	LGenVerBuff(1, &VBO);
+	LGenVerBuff(1,&VBO);
 	LGenVerBuff(1, &EBO);
 	LBindVerArrays(VAO);
 	LBindVerBuff(LEX_ARRAY_BUFFER, VBO);
@@ -63,12 +57,10 @@ int main() {
 		LUseProgram(Program);
 		LDrawElement(LEX_TRIANGLES, 6, LEX_UNSIGNED_INT, 0);
 		LPollSwapWindow();
-		glfwPollEvents();
 	}
 	LDeleteVerArray(&VAO);
 	LDeleteBuffer(2, &VBO, &EBO);
 	LDeleteProgram(Program);
 	LDestroyWindow();
-	glfwTerminate();
 	return 0;
 }
